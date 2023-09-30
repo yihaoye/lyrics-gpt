@@ -29,7 +29,7 @@ vocab_size = len(chars)
 stoi = { ch:i for i,ch in enumerate(chars) }
 itos = { i:ch for i,ch in enumerate(chars) }
 encode = lambda s: [stoi[c] for c in s] # encoder: take a string, output a list of integers
-decode = lambda l: ''.join([itos[i] if i >= 0 and i < vocab_size else '[UNK]' for i in l]) # decoder: take a list of integers, output a string
+decode = lambda l: ''.join([itos[i] for i in l]) # decoder: take a list of integers, output a string
 
 # Train and test splits
 data = torch.tensor(encode(text), dtype=torch.long)
@@ -221,5 +221,5 @@ for iter in range(max_iters):
 
 # generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-print(decode(m.generate(context, max_new_tokens=500)[0].tolist()))
-open('output.txt', 'w').write(decode(m.generate(context, max_new_tokens=10000)[0].tolist()))
+# print(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
+open('output.txt', 'w').write(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
