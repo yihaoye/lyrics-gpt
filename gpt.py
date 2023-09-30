@@ -3,22 +3,22 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 # hyperparameters
-batch_size = 64 # how many independent sequences will we process in parallel?
-block_size = 256 # what is the maximum context length for predictions?
-max_iters = 3500
-eval_interval = 500
-learning_rate = 3e-4
-device = ('cuda' if torch.cuda.is_available() else 'mps' if hasattr(torch.backends, 'mps') and torch.backends.mps.is_available() else 'cpu')
-print(device)
+batch_size = 16 # how many independent sequences will we process in parallel?
+block_size = 32 # what is the maximum context length for predictions?
+max_iters = 5000
+eval_interval = 100
+learning_rate = 1e-3
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 eval_iters = 200
-n_embd = 384
-n_head = 6
-n_layer = 6
-dropout = 0.2
+n_embd = 64
+n_head = 4
+n_layer = 4
+dropout = 0.0
 # ------------
 
 torch.manual_seed(1337)
 
+# wget https://raw.githubusercontent.com/yihaoye/lyrics-gpt/main/input.txt
 with open('input.txt', 'r', encoding='utf-8') as f:
     text = f.read()
 
@@ -221,5 +221,5 @@ for iter in range(max_iters):
 
 # generate from the model
 context = torch.zeros((1, 1), dtype=torch.long, device=device)
-# print(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
-open('output.txt', 'w').write(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
+print(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
+# open('output.txt', 'w').write(decode(m.generate(context, max_new_tokens=3000)[0].tolist()))
