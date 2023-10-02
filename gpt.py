@@ -3,8 +3,8 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 # hyperparameters
-batch_size = 32 # how many independent sequences will we process in parallel?
-block_size = 64 # what is the maximum context length for predictions?
+batch_size = 64 # how many independent sequences will we process in parallel?
+block_size = 48 # what is the maximum context length for predictions?
 max_iters = 5000
 eval_interval = 100
 learning_rate = 3e-4
@@ -13,10 +13,10 @@ eval_iters = 200
 n_embd = 128
 n_head = 6
 n_layer = 6
-dropout = 0.15
+dropout = 0.25
 # ------------
 
-torch.manual_seed(1337)
+torch.manual_seed(1234)
 
 # wget https://raw.githubusercontent.com/yihaoye/lyrics-gpt/main/input.txt
 with open('input.txt', 'r', encoding='utf-8') as f:
@@ -201,7 +201,7 @@ m = model.to(device)
 print(sum(p.numel() for p in m.parameters())/1e6, 'M parameters')
 
 # create a PyTorch optimizer
-optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate) # torch 2.0 have already set weight_decay = 0.01 as default in AdamW
 
 for iter in range(max_iters):
 
